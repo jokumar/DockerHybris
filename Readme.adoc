@@ -28,27 +28,29 @@ This document covers the setup of Hybris in Docker for Windows. This will help i
 image::1.png[]
 
 
-. It might ask you to restart your system to enable virtualization. If still it gives error, take it to ITS for enabling virtualization .If you see Docker is running then Bingo!!! You are ready to deploy your first application in Docker .If you get any error message related to memory, you need to cleanup by uninstalling some of the applications to make some space . 
+- It might ask you to restart your system to enable virtualization. If still it gives error, take it to ITS for enabling virtualization .If you see Docker is running then Bingo!!! You are ready to deploy your first application in Docker .If you get any error message related to memory, you need to cleanup by uninstalling some of the applications to make some space . 
 
 
 == Install Hybris in Docker 
 
-. 	Copy the following files in the location where hybris is unzipped. 
+-	Copy the following files in the location where hybris is unzipped. 
 
 ..	Dockerfile
 ..	.dockerignore
 
-.	Copy the DockerHybris folder (I will share it) inside the location where hybris is unzipped.
-.	Copy the hybris zip inside the DockerHybris folder. Hybris zip is the original zip downloaded from Hybris. Rename the zip file as ‘hybris.zip’.
+image::2.png[]
 
-.	It should have the following files :
+-	Copy the DockerHybris folder (I will share it) inside the location where hybris is unzipped.
+-	Copy the hybris zip inside the DockerHybris folder. Hybris zip is the original zip downloaded from Hybris. Rename the zip file as ‘hybris.zip’.
+
+-	It should have the following files :
 ..	mysql-connector-java-5.1.46.jar  - Jar for Hybris to connect to DB 
 ..	start-hybris-container.bat  - Batch file to start Hybris image in docker container 
 ..	start-sql-container.bat   - Batch file to start sql image in docker container 
 ..	wrapperScript.sh  - script to build and start the hybris server 
 ..	hybris.zip   - complete hybris zip file . 
 
-.	Changes in local.properties:
+-	Changes in local.properties:
 
 	$   	#Solr Configuration
 		solrserver.instances.default.autostart=false
@@ -73,7 +75,7 @@ image::1.png[]
 		media.replication.dirs=/var/lib/media
 		media.read.dir=/var/lib/media
 
-.	Change docker id in start-hybris-server.bat. Search for joy1987 and replace it with your docker id. 
+-	Change docker id in start-hybris-server.bat. Search for joy1987 and replace it with your docker id. 
 
 .	Navigate to DockerHybris folder and execute the below command :
 ..	start-sql-container.bat (this is one timer to start the sql db server)
@@ -81,9 +83,9 @@ image::1.png[]
 buildType can be clean or build 
 ..	example : start-hybris-container.bat clean
 
-.	Wait for few minutes till hybris starts up. 
-.	Initialize the system once started. And now you can see your application up. 
-.	If you want to stop the containers , you can invoke the following commands :
+-	Wait for few minutes till hybris starts up. 
+-	Initialize the system once started. And now you can see your application up. 
+-	If you want to stop the containers , you can invoke the following commands :
 
 	$ docker stop docker_hybris
 	
@@ -107,8 +109,16 @@ While analyzing I have come across some of the steps which can make the applicat
 •	Reducing Disk IO 
 Disk IO can reach 100% at times and can make the system slow during Initialization / Update or any DB operations .This can be controlled by the following process. This step is optional for you:
 Step 1. Press Windows logo key + R at the same time, and type in services.msc. 
+
+image::3.png[]
+
 Step 2. Locate Windows Search option, double-click it to enter its Properties window.
+
+image::4.png[]
+
 Step 3. Change the Startup type to Disabled. Then click Apply and OK to save your change. 
+
+image::5.png[]
 
 •	Disable Cron Job 
 Add the below line in local properties to disable the cron job during restart 
