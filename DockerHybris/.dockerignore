@@ -1,0 +1,25 @@
+# Items that don't need to be in a Docker image.
+# Anything not used by the build system should go here.
+installer?
+licenses?
+hybris-Mobile-Apps-SDK
+hybris-ems
+c4c-integration
+build-tools
+hybris/bin/ext*
+hybris/bin/platform
+hybris/config/languages
+hybris/config/licence
+hybris/config/solr/instances/default/configsets/backoffice
+hybris/config/solr/instances/default/hsperfdata*
+hybris/config/tcServer
+hybris/config/tomcat
+hybris/data
+hybris/log
+hybris/roles
+hybris/temp
+Dockerfile
+README.md
+README
+.dockerignore
+start-container.bat
