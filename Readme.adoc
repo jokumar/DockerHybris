@@ -40,7 +40,8 @@ image::1.png[]
 
 image::2.png[]
 
--	Copy the DockerHybris folder (I will share it) inside the location where hybris is unzipped.
+-       Download the Hybris zip from the SAP website and unzip it in a location in your machine . 
+-	Now Copy the DockerHybris folder inside the location where hybris is unzipped.
 -	Copy the hybris zip inside the DockerHybris folder. Hybris zip is the original zip downloaded from Hybris. Rename the zip file as ‘hybris.zip’.
 
 -	It should have the following files :
