@@ -2,7 +2,7 @@
 :toc:
 :icons:
 :linkcss:
-:imagesdir: ../../resources/images
+:imagesdir: images
 
 
 
@@ -24,6 +24,10 @@ This document covers the setup of Hybris in Docker for Windows. This will help i
 . Right click on the Docker in task bar and got to settings. Give the below specifications for starting Docker :
 	CPU : 2 
 	Memory : 3584 MB for 8 GB RAM. If you have 16 GB , please allocate more than 6GB for docker . Also if you custom folder increases, 3584 MB might not suffice and you might need to increase it.
+
+image::1.png[]
+
+
 . It might ask you to restart your system to enable virtualization. If still it gives error, take it to ITS for enabling virtualization .If you see Docker is running then Bingo!!! You are ready to deploy your first application in Docker .If you get any error message related to memory, you need to cleanup by uninstalling some of the applications to make some space . 
 
 
