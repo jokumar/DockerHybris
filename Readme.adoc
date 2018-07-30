@@ -25,3 +25,101 @@ This document covers the setup of Hybris in Docker for Windows. This will help i
 	CPU : 2 
 	Memory : 3584 MB for 8 GB RAM. If you have 16 GB , please allocate more than 6GB for docker . Also if you custom folder increases, 3584 MB might not suffice and you might need to increase it.
 . It might ask you to restart your system to enable virtualization. If still it gives error, take it to ITS for enabling virtualization .If you see Docker is running then Bingo!!! You are ready to deploy your first application in Docker .If you get any error message related to memory, you need to cleanup by uninstalling some of the applications to make some space . 
+
+
+== Install Hybris in Docker 
+
+. 	Copy the following files in the location where hybris is unzipped. 
+
+..	Dockerfile
+..	.dockerignore
+
+.	Copy the DockerHybris folder (I will share it) inside the location where hybris is unzipped.
+.	Copy the hybris zip inside the DockerHybris folder. Hybris zip is the original zip downloaded from Hybris. Rename the zip file as ‘hybris.zip’.
+
+.	It should have the following files :
+..	mysql-connector-java-5.1.46.jar  - Jar for Hybris to connect to DB 
+..	start-hybris-container.bat  - Batch file to start Hybris image in docker container 
+..	start-sql-container.bat   - Batch file to start sql image in docker container 
+..	wrapperScript.sh  - script to build and start the hybris server 
+..	hybris.zip   - complete hybris zip file . 
+
+.	Changes in local.properties:
+
+	$   	#Solr Configuration
+		solrserver.instances.default.autostart=false
+		solrserver.instances.default.mode=standalone
+		solrserver.instances.default.hostname=localhost
+		solrserver.instances.default.port=8983
+		solrserver.instances.default.memory=1024m
+		solr.endpoint.url=http://localhost:8983/solr
+		mysql.optional.tabledefs=CHARSET=utf8 COLLATE=utf8_bin
+		## A type of MySQL database tables, for example InnoDB for transactional or MyISAM for non-transactional tables
+		mysql.tabletype=InnoDB
+		db.url=jdbc:mysql://hybris_sql/isahybris?useConfigs=maxPerformance&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+		db.driver=com.mysql.jdbc.Driver
+		db.username=admin
+		db.password=admin
+
+	    	cronjob.timertask.loadonstartup=false
+		
+		media.default.storage.strategy=localFileMediaStorageStrategy
+		media.default.hashing.depth=2
+		// Where media files are written. Instead of below location you can also use '/usr/var/media' or '\\\\hostname\\shared_folder' 
+		media.replication.dirs=/var/lib/media
+		media.read.dir=/var/lib/media
+
+.	Change docker id in start-hybris-server.bat. Search for joy1987 and replace it with your docker id. 
+
+.	Navigate to DockerHybris folder and execute the below command :
+..	start-sql-container.bat (this is one timer to start the sql db server)
+..	start-hybris-container.bat {buildType} 
+buildType can be clean or build 
+..	example : start-hybris-container.bat clean
+
+.	Wait for few minutes till hybris starts up. 
+.	Initialize the system once started. And now you can see your application up. 
+.	If you want to stop the containers , you can invoke the following commands :
+
+	$ docker stop docker_hybris
+	
+	
+== Useful Docker Commands that you need to familiarize	
+•	docker ps  : Show the running docker containers .
+•	docker image ls : show the running images
+•	docker rmi –f {image id}  : remove the image forcefully 
+•	docker stop {container Id} : 	 stop a container 
+•	docker rm {container Id} : Remove a container 
+•	docker exec –it {containerName} bash : Navigate inside a container 
+•	Delete Untagged images :   docker images | ConvertFrom-String | where {$_.P2 -eq "<none>"} | % { docker rmi $_.P3 } 
+
+== Word of Caution 
+Monitor the CPU, Memory and Disk from Task Manager as these vary from system to system . In order to get the best performance, try to minimize these numbers by not running too many application during the Initialization and server startup.  
+
+== Faster performance for running Hybris in Windows system
+
+While analyzing I have come across some of the steps which can make the application faster even in 8 GB RAM . 
+•	Use Eclipse Photon in place of Oxygen. It is faster and consume less memory 
+•	Reducing Disk IO 
+Disk IO can reach 100% at times and can make the system slow during Initialization / Update or any DB operations .This can be controlled by the following process. This step is optional for you:
+Step 1. Press Windows logo key + R at the same time, and type in services.msc. 
+Step 2. Locate Windows Search option, double-click it to enter its Properties window.
+Step 3. Change the Startup type to Disabled. Then click Apply and OK to save your change. 
+
+•	Disable Cron Job 
+Add the below line in local properties to disable the cron job during restart 
+	$ cronjob.timertask.loadonstartup=false
+•	Use IE instead of Chrome (I know it is tough to do )
+•	Try to close the eclipse during system initialization or update.
+
+== Observations with Docker Hybris
+System specifications:
+RAM : 8GB 
+Application Running: Skype /Outlook .
+Closed Eclipse and Chrome. 
+Eclipse version use: Photon (~500MB RAM used during debugging)
+
+=== Please Note: 
+•	Symbolic Link will not work . You should have the original custom folder inside hybris. 
+•	-force option is not working with hybris 6.1 for starting solr. use -force for hybris 6.7.  
+     Use "./solr start -p 8983" instead of "./solr start -force -p 8983" for hybris 6.1 in wrapperScript.sh (line #6)
