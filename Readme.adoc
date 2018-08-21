@@ -133,6 +133,13 @@ image::6.png[]
 
 image::7.png[]
 
+- Now make sure to generate all the remote xml for custom projects . 
+
+image::8.png[]
+
+- Make sure to build the docker image again so as to copy all the custom files to the container . Without the remote xml , container will not update the projects . 
+
+- Make a change in your file and it will reflect in the container immediately without server restart . 
 
 == Useful Docker Commands that you need to familiarize	
 •	docker ps  : Show the running docker containers .
