@@ -89,8 +89,51 @@ buildType can be clean or build
 -	If you want to stop the containers , you can invoke the following commands :
 
 	$ docker stop docker_hybris
+
+== Working Jrebel with Docker . 
+- Jrebel is a developement plugin for faster developement which helps in developing without server restart . It has support with Hybris .I am not covering how to setup Jrebel for Hybris as it is already covered in Jrebel documentation https://manuals.zeroturnaround.com/jrebel/standalone/hybris.html
+
+In this document, I am listing down the steps to set up the Jrebel with Hybris.
+In Docker file , add the following line after this step : "RUN unzip hybris.zip"
+ -	Changes in Dockerfile:
+
+	$   	RUN wget -O jrebel.zip __http://dl.zeroturnaround.com/jrebel-stable-nosetup.zip && \
+                unzip jrebel.zip && \
+                mv jrebel /opt/jrebel && \
+                rm jrebel.zip 
 	
+
+In local property do the following change depending on debug or normal server startup  :
+- Changes in local.properties:
+
+	$   	 #jrebel
+         #tomcat.javaoptions=-agentpath:/opt/jrebel/lib/libjrebel64.so -Drebel.remoting_plugin=true 
+         tomcat.debugjavaoptions =-agentpath:/opt/jrebel/lib/libjrebel64.so -Drebel.remoting_plugin=true  
 	
+- Once you have successfully configured JRebel in docker and container has started , you should see the following banner during hybris server startup:
+
+
+	$   	JRebel:  #####################################################
+		JRebel:
+		JRebel:  JRebel Legacy Agent 7.0.6
+		JRebel:  (c) Copyright ZeroTurnaround AS, Estonia, Tartu.
+		JRebel:
+		JRebel:  Over the last 1 days JRebel prevented
+		JRebel:  at least 1 redeploys/restarts saving you
+		JRebel:  about 0 hours.
+		JRebel:
+		JRebel:  Server is running with JRebel remote server support.
+		JRebel:
+		JRebel:  #####################################################
+- Open Help > JRebel > Configuration. Select the Remote servers tab. You will be presented with the following view:
+
+image::6.png[]
+
+- Test the connection by providing the hybris server url :
+
+image::7.png[]
+
+
 == Useful Docker Commands that you need to familiarize	
 •	docker ps  : Show the running docker containers .
 •	docker image ls : show the running images
