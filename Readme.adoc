@@ -108,7 +108,7 @@ In local property do the following change depending on debug or normal server st
 
 	$   	 #jrebel
          #tomcat.javaoptions=-agentpath:/opt/jrebel/lib/libjrebel64.so -Drebel.remoting_plugin=true 
-         tomcat.debugjavaoptions =-agentpath:/opt/jrebel/lib/libjrebel64.so -Drebel.remoting_plugin=true  
+         tomcat.debugjavaoptions =-agentpath:/opt/jrebel/lib/libjrebel64.so -Drebel.remoting_plugin=true -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,address=8000,suspend=n
 	
 - Once you have successfully configured JRebel in docker and container has started , you should see the following banner during hybris server startup:
 
