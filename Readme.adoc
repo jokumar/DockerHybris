@@ -131,8 +131,6 @@ image::6.png[]
 
 - Test the connection by providing the hybris server url :
 
-image::7.png[]
-
 - Now make sure to generate all the remote xml for custom projects . 
 
 image::8.png[]
